@@ -107,3 +107,8 @@ There are lots of additions to 11 to DRY things up, but the above is what I need
 
 https://www.youtube.com/watch?v=jZqYXSmgDuM&list=PLWKjhJtqVAbluXJKKbCIb4xd7fcRkpzoz&index=2&t=1504s
 ```
+
+### PONG-3: The Paddle Update (Interactivity Yeah!)
+
+- `love.keyboard.isDown(key)` > Returns true or false depending on whether the specified key is currently held down; differs from `love.keypressed(key)` in that this can be called arbitrarily and will continuously return true if the key is pressed down, where `love.keypressed(key)` will only fire its code once every time the key is initially pressed down. However, since we want to be able to move our paddles up and down by holding down the appropriate keys, we need a function to test for longer periods of input, hence the use of `love.isDown(key)`.
+
