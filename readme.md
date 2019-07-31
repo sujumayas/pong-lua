@@ -60,7 +60,7 @@ So we represent every coordinate with the X axis as first parameter and the Y ax
 
 
 
-### Some Importan LOVE2D Functions
+### PONG-0: Some Importan LOVE2D Functions
 
 Love2d expects this functions to be implemented in main.lua and calls them internally. If we dont define them, it will still function, but our game will be fundamentally incomplete, at least if update or draw are missing!
 
@@ -73,5 +73,13 @@ Other functions that we will use in this game:
 - `love.graphics.printf(text, x, y, [width], [align])` > Versatile print function that can align text left, right, or center on the screen. 
 - `love.window.setMode(width, height, params)` > Used to initialize the window's dimensions and to set parameters like vsync (vertical sync), whether we're fullscreen or not, and whether the window is resizable after startup. Actually we are going to use `push library` later. 
 
+
+### PONG-1: The low res update important functions
+
+- `love.graphics.setDefaultFilter(min, mag)` > Sets the texture scaling filter when minimizing and magnifying textures and fonts; default is bilinear, which causes blurriness, and for our use cases we will typically want nearest-neighbor filtering (`nearest`), which results in perfect pixel upscaling and downscaling, simulating retro feel. 
+
+- `love.keypressed(key)` > A LOVE2D callback function that executes whenever we press a key, assumming we've implemented this in our main.lua, in the same vein as `love.load()`, `love.update(dt)` and `love.draw()` It recieves a key 'string'. 
+
+- `love.event.quit()` > Simple function that terminates the application. 
 
 
