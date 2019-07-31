@@ -112,3 +112,31 @@ https://www.youtube.com/watch?v=jZqYXSmgDuM&list=PLWKjhJtqVAbluXJKKbCIb4xd7fcRkp
 
 - `love.keyboard.isDown(key)` > Returns true or false depending on whether the specified key is currently held down; differs from `love.keypressed(key)` in that this can be called arbitrarily and will continuously return true if the key is pressed down, where `love.keypressed(key)` will only fire its code once every time the key is initially pressed down. However, since we want to be able to move our paddles up and down by holding down the appropriate keys, we need a function to test for longer periods of input, hence the use of `love.isDown(key)`.
 
+
+### PONG-4: The ball update
+
+- `math.randomseed(num)` > Seeds the random number generator used by Lua (math.random) with some value such that its randomness is dependant on that supplied value, allowing us to pass in different numbers each playthrough to guarantee non-consistency across different program executions (or uniformity if we want consistent behavior for testing). 
+- `os.time()` > Lua function that returns, in seconds, the time since 00:00:00 UTC, January 1, 1970, also known as Unix epoch time. 
+- `math.random(min, max)` > Returns a random number, dependent on the seeded random number generator, between min and max, inclusive. 
+- `math.min(num1, num2)` > returns the smallest of two values
+- `math.max(num1, num2)` > returns the biggest of two values
+
+
+### PONG-5: The Class Update <3
+
+#### What is a class?
+
+A class is way of taking data and putting it together in a container and add some methods to that same container so we can encapsulate all the logic of an "object" in a blueprint to use it later for ease of use. 
+
+- Its a blueprint for creating bundles of data and code that are related
+- A "Car" class can have attributes that describe its brand, model, color, miles, and anything else descriptive; these are also known as "fields" or "attributes". 
+- A "Car" class can also have "methods" that define its behavior, succh as "accelerate, "turn", "honk", and more, which take the form of functions. 
+- Objects are instantiated from these class blueprints, and it's these concrete objects that are the physical "cars" you see on the road, as opposed to the blueprints that may exist in the factory. 
+- Our Paddles and Ball are perfect simple use cases for taking some of our code and bundling it together into classes and objects. 
+
+
+#### Steps
+
+1. Require class library ( [https://github.com/vrld/hump/class.lua](https://github.com/vrld/hump/class.lua) )
+2. Separate logic for Paddle and Ball classes (use capitalize for class files) and require those files also.
+3. Initialize the variables player1, player2 and ball with the classes init method. 
