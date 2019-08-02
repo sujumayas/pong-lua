@@ -4,7 +4,8 @@ Inspired by CS50 Harvard University online Classes
 
 ## Repo from Harvard: 
 
-[https://github.com/cs50/gd50/tree/master/pong](https://github.com/cs50/gd50/tree/master/pong)
+[Github repo](https://github.com/cs50/gd50/tree/master/pong)
+[Lectures Code](https://cdn.cs50.net/games/2018/spring/lectures/0/src0/pong/)
 
 ## What is Lua
 
@@ -140,3 +141,20 @@ A class is way of taking data and putting it together in a container and add som
 1. Require class library ( [https://github.com/vrld/hump/class.lua](https://github.com/vrld/hump/class.lua) )
 2. Separate logic for Paddle and Ball classes (use capitalize for class files) and require those files also.
 3. Initialize the variables player1, player2 and ball with the classes init method. 
+4. Use update, reset and render methods from within their instances instead of directly in main.lua. <3
+
+
+### PONG-6: The FPS update
+
+- `love.window.setTitle(title)` > Sets a title to the window. :D
+- `love.timer.getFPS()` > Return the current FPS of our application, making it easy to monitor when printed. 
+
+
+
+
+
+-----
+
+## For later: 
+
+[Love2d Build Automation with itch.io, Gitlab, Docker & love-release](https://github.com/oniietzschan/blog/issues/1#issue-236375017)
