@@ -67,6 +67,46 @@ end
     Will be executed every frame and pass through dt (delta time). 
 ]]
 function love.update(dt)
+    if gameState == 'play' then
+        --detect ball collision with paddles, reversing dx if true and
+        -- slightly increasing it, then altering the dy based on the position
+        if ball:collides(player1) then
+            ball.dx = -ball.dx * 1.03
+            ball.x = player1.x + 5
+
+            -- keep velocity going in the same direction, but randomize it
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+        -- Check for second player... 
+        if ball:collides(player2) then
+            ball.dx = -ball.dx * 1.03
+            ball.x = player2.x - 4
+
+            -- keep velocity going in the same direction, but randomize it
+            if ball.dy < 0 then
+                ball.dy = -math.random(10, 150)
+            else
+                ball.dy = math.random(10, 150)
+            end
+        end
+
+        -- Just check for screen colliding top
+        if ball.y <= 0 then
+            ball.y = 0
+            ball.dy = -ball.dy
+        end
+        
+        -- and check for bottom + ball size.
+        if ball.y >= VIRTUAL_HEIGHT - 4 then
+            ball.y = VIRTUAL_HEIGHT - 4
+            ball.dy = -ball.dy
+        end
+    end
+    
     -- player 1 movement
     if love.keyboard.isDown('w') then
         player1.dy = -PADDLE_SPEED
@@ -85,6 +125,9 @@ function love.update(dt)
         player2.dy = 0
     end
 
+    
+
+        
     if gameState == 'play' then
         ball:update(dt)
     end
@@ -163,5 +206,5 @@ end
 function displayFPS()
     love.graphics.setFont(smallFont)
     love.graphics.setColor(0, 1, 0, 1)
-    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10)
+    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()), 10, 10) -- (.. is string concatenation in lua!)
 end

@@ -150,6 +150,30 @@ A class is way of taking data and putting it together in a container and add som
 - `love.timer.getFPS()` > Return the current FPS of our application, making it easy to monitor when printed. 
 
 
+### PONG-7: The Collision update
+
+#### AABB Collision Detection, p.1
+
+AABB Collision relies on all colliding entities to have "alix-aligned bounding boxes", which simply means their collision boxes contain no rotation in our world space, which allows us to use a simple math formula to test for collision. 
+
+```lua
+if rect1.x is not > rect2.x + rect2.width and
+   rect1.x + rect1.width is not < rect2.x and
+   rect1.y is not > rect2.y + rect2.height and
+   rect1.y + rect1.height is not < rect2.y:
+      collision is true
+else
+   collision is false
+```
+
+
+
+### PONG-8: Wut
+
+
+### PONG-9: Scoring the goals
+
+
 
 
 
