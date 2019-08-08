@@ -37,9 +37,10 @@ function love.load()
 
     -- more "retro-looking" font object we can use for any text
     smallFont = love.graphics.newFont('font.ttf', 8)
-
-    -- larger font for score
+    largeFont = love.graphics.newFont('font.ttf', 16)
     scoreFont = love.graphics.newFont('font.ttf', 32)
+
+    -- Large Font for results
 
     -- set LÖVE2D's active font to the smallFont obect
     love.graphics.setFont(smallFont)
@@ -123,15 +124,28 @@ function love.update(dt)
     if ball.x < 0 then
         servingPlayer = 1
         player2Score = player2Score + 1
-        ball:reset()
-        gameState = 'serve'
+        -- if we've reached a score of 10, the game is over; set the
+        -- state to done so we can show the victory message
+        if player2Score >= 10 then
+            winningPlayer = 2
+            gameState = 'done'
+        else
+            gameState = 'serve'
+            -- places the ball in the middle of the screen, no velocity
+            ball:reset()
+        end
     end
 
     if ball.x > VIRTUAL_WIDTH then
         servingPlayer = 2
         player1Score = player1Score + 1
-        ball:reset()
-        gameState = 'serve'
+        if player1Score >= 10 then
+            winningPlayer = 1
+            gameState = 'done'
+        else
+            gameState = 'serve'
+            ball:reset()
+        end
     end
     
     -- player 1 movement
@@ -181,6 +195,23 @@ function love.keypressed(key)
         elseif gameState == 'serve' then
             gameState = 'play'
         end
+    elseif gameState == 'done' then
+        -- game is simply in a restart phase here, but will set the serving
+        -- player to the opponent of whomever won for fairness!
+        gameState = 'serve'
+
+        ball:reset()
+
+        -- reset scores to 0
+        player1Score = 0
+        player2Score = 0
+
+        -- decide serving player as the opposite of who won
+        if winningPlayer == 1 then
+            servingPlayer = 2
+        else
+            servingPlayer = 1
+        end
     end
 end
 
@@ -213,6 +244,13 @@ function love.draw()
         love.graphics.printf('Press Enter to serve!', 0, 20, VIRTUAL_WIDTH, 'center')
     elseif gameState == 'play' then
         -- no UI messages to display in play
+    elseif gameState == 'done' then
+        -- UI messages
+        love.graphics.setFont(largeFont)
+        love.graphics.printf('Player ' .. tostring(winningPlayer) .. ' wins!',
+            0, 10, VIRTUAL_WIDTH, 'center')
+        love.graphics.setFont(smallFont)
+        love.graphics.printf('Press Enter to restart!', 0, 30, VIRTUAL_WIDTH, 'center')
     end
 
     -- render first paddle (left side)
