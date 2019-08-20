@@ -40,7 +40,13 @@ function love.load()
     largeFont = love.graphics.newFont('font.ttf', 16)
     scoreFont = love.graphics.newFont('font.ttf', 32)
 
-    -- Large Font for results
+    -- Sounds
+    sounds = {
+        ['paddle_hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'static'),
+        ['score'] = love.audio.newSource('sounds/score.wav', 'static'),
+        ['wall_hit'] = love.audio.newSource('sounds/wall_hit.wav', 'static')
+    }
+
 
     -- set LÖVE2D's active font to the smallFont obect
     love.graphics.setFont(smallFont)
@@ -78,6 +84,8 @@ function love.update(dt)
         else
             ball.dx = -math.random(140, 200)
         end
+    elseif gameState == 'done' then 
+
     elseif gameState == 'play' then
         --detect ball collision with paddles, reversing dx if true and
         -- slightly increasing it, then altering the dy based on the position
@@ -91,6 +99,7 @@ function love.update(dt)
             else
                 ball.dy = math.random(10, 150)
             end
+            sounds['paddle_hit']:play()
         end
         -- Check for second player... 
         if ball:collides(player2) then
@@ -103,18 +112,21 @@ function love.update(dt)
             else
                 ball.dy = math.random(10, 150)
             end
+            sounds['paddle_hit']:play()
         end
 
         -- Just check for screen colliding top
         if ball.y <= 0 then
             ball.y = 0
             ball.dy = -ball.dy
+            sounds['wall_hit']:play()
         end
         
         -- and check for bottom + ball size.
         if ball.y >= VIRTUAL_HEIGHT - 4 then
             ball.y = VIRTUAL_HEIGHT - 4
             ball.dy = -ball.dy
+            sounds['wall_hit']:play()
         end
     end
 
@@ -129,11 +141,13 @@ function love.update(dt)
         if player2Score >= 10 then
             winningPlayer = 2
             gameState = 'done'
+            ball:reset()
         else
             gameState = 'serve'
             -- places the ball in the middle of the screen, no velocity
             ball:reset()
         end
+        sounds['score']:play()
     end
 
     if ball.x > VIRTUAL_WIDTH then
@@ -142,10 +156,12 @@ function love.update(dt)
         if player1Score >= 10 then
             winningPlayer = 1
             gameState = 'done'
+            ball:reset()
         else
             gameState = 'serve'
             ball:reset()
         end
+        sounds['score']:play()
     end
     
     -- player 1 movement
@@ -194,23 +210,24 @@ function love.keypressed(key)
             gameState = 'serve'
         elseif gameState == 'serve' then
             gameState = 'play'
-        end
-    elseif gameState == 'done' then
-        -- game is simply in a restart phase here, but will set the serving
-        -- player to the opponent of whomever won for fairness!
-        gameState = 'serve'
+        elseif gameState == 'done' then
+            -- game is simply in a restart phase here, but will set the serving
+            -- player to the opponent of whomever won for fairness!
+            gameState = 'serve'
+    
+            ball:reset()
+    
+            -- reset scores to 0
+            player1Score = 0
+            player2Score = 0
+    
+            -- decide serving player as the opposite of who won
+            if winningPlayer == 1 then
+                servingPlayer = 2
+            else
+                servingPlayer = 1
+            end
 
-        ball:reset()
-
-        -- reset scores to 0
-        player1Score = 0
-        player2Score = 0
-
-        -- decide serving player as the opposite of who won
-        if winningPlayer == 1 then
-            servingPlayer = 2
-        else
-            servingPlayer = 1
         end
     end
 end
